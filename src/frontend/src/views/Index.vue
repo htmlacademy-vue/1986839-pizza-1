@@ -1,6 +1,10 @@
 <template>
   <div>
-    <AppLayout />
+    <AppLayout
+      :pizzaOrder="pizzaOrder"
+      :pizzaName="pizzaName"
+      :price="price"
+    />
 
     <main class="content">
       <form action="#" method="post">
@@ -32,6 +36,7 @@
             :pizzaName="pizzaName"
             @setOrderIngredient="setOrderIngredient"
             @setName="setName"
+            @setOrderPrice="setOrderPrice"
           />
         </div>
       </form>
@@ -63,6 +68,7 @@ export default {
         ingredients: [],
       },
       pizzaName: "",
+      price: 0,
       dough: 1,
       size: 1,
       sauce: 1,
@@ -105,6 +111,9 @@ export default {
   methods: {
     setName(name) {
       this.pizzaName = name;
+    },
+    setOrderPrice(price) {
+      this.price = price;
     },
     setOrderIngredient({ id, count }) {
       const itemIndex = this.pizzaOrder['ingredients'].findIndex(

@@ -1,5 +1,8 @@
 <template>
-  <p>Итого: {{ totalPrice }} ₽</p>
+  <div class="content__result">
+    <p>Итого: {{ totalPrice }} ₽</p>
+    <button type="button" class="button" :disabled="cookButtonIsDisabled" @click="setPrice()">Готовьте!</button>
+  </div>
 </template>
 
 <script>
@@ -14,9 +17,10 @@
         type: Object,
         required: true,
       },
-    },
-    data() {
-      return {};
+      pizzaName: {
+        type: String,
+        required: true,
+      },
     },
     computed: {
       totalPrice() {
@@ -29,12 +33,18 @@
           )
         );
       },
+      cookButtonIsDisabled() {
+        return !this.pizzaName.length || !this.pizzaOrder.ingredients.length;
+      },
     },
     methods: {
       sumIngredients(arr) {
         return arr.reduce((sum, item) => {
           return sum + (item?.count ?? 1) * item.price;
         }, 0);
+      },
+      setPrice() {
+        this.$emit("setOrderPrice", this.totalPrice);
       },
     },
   };

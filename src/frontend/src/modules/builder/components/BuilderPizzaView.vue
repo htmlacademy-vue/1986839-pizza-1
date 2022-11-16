@@ -49,10 +49,12 @@
         </div>
       </div>
 
-      <div class="content__result">
-        <BuilderPriceCounter :pizza="pizza" :pizzaOrder="pizzaOrder" />
-        <button type="button" class="button" :disabled="cookButtonIsDisabled">Готовьте!</button>
-      </div>
+      <BuilderPriceCounter
+        :pizza="pizza"
+        :pizzaOrder="pizzaOrder"
+        :pizzaName="pizzaName"
+        @setOrderPrice="setOrderPrice"
+      />
     </div>
   </AppDrop>
 </template>
@@ -91,9 +93,6 @@
       doughSauceClass() {
         return `pizza--foundation--${this.doughClass}-${this.sauceClass}`;
       },
-      cookButtonIsDisabled() {
-        return !this.pizzaName.length || !this.pizzaOrder.ingredients.length;
-      },
     },
     methods: {
       ingredientCount(id) {
@@ -108,6 +107,9 @@
           id,
           count: this.ingredientCount(id),
         });
+      },
+      setOrderPrice(price) {
+        this.$emit("setOrderPrice", price);
       },
     },
   };
