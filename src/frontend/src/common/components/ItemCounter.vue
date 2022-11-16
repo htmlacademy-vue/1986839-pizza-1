@@ -3,7 +3,7 @@
     <button
       type="button"
       class="counter__button counter__button--minus"
-      @click="$emit('changeIngredientsCount', { id: ingredientId, count: -1 })"
+      @click="$emit('changeIngredientsCount', { id: ingredient.id, count: itemCounterInputValue-1 })"
       :disabled="buttonMinusDisabled"
     >
       <span class="visually-hidden">Меньше</span>
@@ -17,7 +17,7 @@
     <button
       type="button"
       class="counter__button counter__button--plus"
-      @click="$emit('changeIngredientsCount', { id: ingredientId, count: 1 })"
+      @click="$emit('changeIngredientsCount', { id: ingredient.id, count: itemCounterInputValue+1 })"
       :disabled="buttonPlusDisabled"
     >
       <span class="visually-hidden">Больше</span>
@@ -26,11 +26,13 @@
 </template>
 
 <script>
+  import { MAX_COUNT_INGREDIENTS } from '@/common/constants';
+
   export default {
     name: "ItemCounter",
     props: {
-      ingredientId: {
-        type: Number,
+      ingredient: {
+        type: Object,
         required: true,
       },
       pizzaOrder: {
@@ -40,21 +42,15 @@
     },
     computed: {
       buttonMinusDisabled() {
-        return !this.pizzaOrder.ingredients.find(
-          (item) => item.id === this.ingredientId
-        );
+        return this.itemCounterInputValue === 0;
       },
       buttonPlusDisabled() {
-        return (
-          this.pizzaOrder.ingredients.filter(
-            (item) => item.id === this.ingredientId
-          )[0]?.count === 3
-        );
+        return this.itemCounterInputValue === MAX_COUNT_INGREDIENTS;
       },
       itemCounterInputValue() {
         return (
           this.pizzaOrder.ingredients.filter(
-            (item) => item.id === this.ingredientId
+            (item) => item.id === this.ingredient.id
           )[0]?.count ?? 0
         );
       },

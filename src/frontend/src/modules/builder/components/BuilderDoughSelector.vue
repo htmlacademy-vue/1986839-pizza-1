@@ -19,12 +19,7 @@
             class="visually-hidden"
             :value="dough.id"
             :checked="pizzaOrder.dough.id === dough.id"
-            @click="
-              $emit('changePizzaOrder', {
-                pizzaOrderParam: 'dough',
-                id: $event.target.value,
-              })
-            "
+            @click="$emit('update:dough', $event.target.value)"
           />
           <b>{{ dough.name }}</b>
           <span>{{ dough.description }}</span>

@@ -37,7 +37,9 @@
                   'pizza__filling--blue_cheese': ingredient.name === 'Блю чиз',
                 },
                 {
-                  'pizza__filling--second': ingredient.count === 2,
+                  'pizza__filling--second': ingredient.count === 2 || ingredient.count === 3,
+                },
+                {
                   'pizza__filling--third': ingredient.count === 3,
                 },
               ]"
@@ -94,11 +96,13 @@
       },
     },
     methods: {
+      ingredientCount({ id }) {
+        return this.pizzaOrder.ingredients.find((item) => item.id === id)?.count ?? 0;
+      },
       changeIngredientsCount({ id }) {
-        this.$emit("changePizzaOrder", {
-          pizzaOrderParam: "ingredients",
+        this.$emit("setOrderIngredient", {
           id,
-          count: 1,
+          count: this.ingredientCount(id),
         });
       },
     },

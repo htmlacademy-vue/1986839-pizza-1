@@ -10,26 +10,27 @@
           <BuilderDoughSelector
             :pizza="pizza"
             :pizzaOrder="pizzaOrder"
-            @changePizzaOrder="changePizzaOrder"
+            :dough.sync="dough"
           />
 
           <BuilderSizeSelector
             :pizza="pizza"
             :pizzaOrder="pizzaOrder"
-            @changePizzaOrder="changePizzaOrder"
+            :size.sync="size"
           />
 
           <BuilderIngredientsSelector
             :pizza="pizza"
             :pizzaOrder="pizzaOrder"
-            @changePizzaOrder="changePizzaOrder"
+            :sauce.sync="sauce"
+            :ingredient.sync="ingredient"
           />
 
           <BuilderPizzaView
             :pizza="pizza"
             :pizzaOrder="pizzaOrder"
             :pizzaName="pizzaName"
-            @changePizzaOrder="changePizzaOrder"
+            @setOrderIngredient="setOrderIngredient"
             @setName="setName"
           />
         </div>
@@ -62,6 +63,13 @@ export default {
         ingredients: [],
       },
       pizzaName: "",
+      dough: 1,
+      size: 1,
+      sauce: 1,
+      ingredient: {
+        id: 0,
+        count: 0,
+      },
     };
   },
   components: {
@@ -71,37 +79,46 @@ export default {
     BuilderIngredientsSelector,
     BuilderPizzaView,
   },
+  created() {
+    this.$watch('dough', () => {
+      this.pizzaOrder['dough'] = {
+        ...this.pizza['dough'].find((item) => item.id === +this.dough),
+      };
+    })
+
+    this.$watch('size', () => {
+      this.pizzaOrder['sizes'] = {
+        ...this.pizza['sizes'].find((item) => item.id === +this.size),
+      };
+    })
+
+    this.$watch('sauce', () => {
+      this.pizzaOrder['sauces'] = {
+        ...this.pizza['sauces'].find((item) => item.id === +this.sauce),
+      };
+    })
+
+    this.$watch('ingredient', () => {
+      this.setOrderIngredient(this.ingredient);
+    })
+  },
   methods: {
     setName(name) {
       this.pizzaName = name;
     },
-    changePizzaOrder(obj) {
-      if (obj.pizzaOrderParam === "ingredients") {
-        this.setOrderIngredient(obj);
-      } else {
-        this.setOrderParam(obj);
-      }
-    },
-    setOrderParam({ pizzaOrderParam, id }) {
-      this.pizzaOrder[pizzaOrderParam] = {
-        ...this.pizza[pizzaOrderParam].find((item) => item.id === +id),
-      };
-    },
-    setOrderIngredient({ pizzaOrderParam, id, count }) {
-      const itemIndex = this.pizzaOrder[pizzaOrderParam].findIndex(
+    setOrderIngredient({ id, count }) {
+      const itemIndex = this.pizzaOrder['ingredients'].findIndex(
         (item) => item.id === id
       );
       if (~itemIndex) {
-        const ingredient = this.pizzaOrder[pizzaOrderParam][itemIndex];
-        const ingredientNewCount = ingredient.count + count;
-        if (ingredientNewCount === 0) {
-          this.pizzaOrder[pizzaOrderParam].splice(itemIndex, 1);
+        if (count === 0) {
+          this.pizzaOrder['ingredients'].splice(itemIndex, 1);
         } else {
-          ingredient.count = ingredientNewCount;
+          this.pizzaOrder['ingredients'][itemIndex].count = count;
         }
       } else {
-        this.pizzaOrder[pizzaOrderParam].push({
-          ...(this.pizza[pizzaOrderParam].filter((item) => item.id === id)[0] || []),
+        this.pizzaOrder['ingredients'].push({
+          ...(this.pizza['ingredients'].filter((item) => item.id === id)[0] || []),
           count,
         });
       }

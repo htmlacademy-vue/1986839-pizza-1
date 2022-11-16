@@ -19,12 +19,7 @@
               class="visually-hidden"
               :value="sauce.id"
               :checked="pizzaOrder.sauces.id === sauce.id"
-              @click="
-                $emit('changePizzaOrder', {
-                  pizzaOrderParam: 'sauces',
-                  id: $event.target.value,
-                })
-            "
+              @click="$emit('update:sauce', $event.target.value)"
             />
             <span>{{ sauce.name }}</span>
           </label>
@@ -50,7 +45,7 @@
               </AppDrag>
 
               <ItemCounter
-                :ingredientId="ingredient.id"
+                :ingredient="ingredient"
                 :pizzaOrder="pizzaOrder"
                 @changeIngredientsCount="changeIngredientsCount"
               />
@@ -67,6 +62,7 @@
   import SelectorItem from "@/common/components/SelectorItem";
   import AppDrag from "@/common/components/AppDrag";
   import ItemCounter from "@/common/components/ItemCounter";
+  import { MAX_COUNT_INGREDIENTS } from '@/common/constants';
 
   export default {
     name: "BuilderIngredientsSelector",
@@ -89,12 +85,13 @@
     methods: {
       isDraggable({ id }) {
         const isInPizzaOrder = this.pizzaOrder.ingredients.some((item) => item.id === id);
-        const isMaxCountIngredients = this.pizzaOrder.ingredients.find((item) => item.id === id)?.count === 3;
+        const isMaxCountIngredients =
+          this.pizzaOrder.ingredients.find((item) => item.id === id)?.count === MAX_COUNT_INGREDIENTS;
+
         return !(isInPizzaOrder && isMaxCountIngredients);
       },
       changeIngredientsCount({ id, count }) {
-        this.$emit("changePizzaOrder", {
-          pizzaOrderParam: "ingredients",
+        this.$emit("update:ingredient", {
           id,
           count,
         });

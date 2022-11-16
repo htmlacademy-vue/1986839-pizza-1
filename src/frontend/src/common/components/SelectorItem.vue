@@ -1,22 +1,6 @@
 <template>
   <span
-    :class="{
-        'filling--mushrooms':   ingredient.name === 'Грибы',
-        'filling--cheddar':     ingredient.name === 'Чеддер',
-        'filling--salami':      ingredient.name === 'Салями',
-        'filling--ham':         ingredient.name === 'Ветчина',
-        'filling--ananas':      ingredient.name === 'Ананас',
-        'filling--bacon':       ingredient.name === 'Бекон',
-        'filling--onion':       ingredient.name === 'Лук',
-        'filling--chile':       ingredient.name === 'Чили',
-        'filling--jalapeno':    ingredient.name === 'Халапеньо',
-        'filling--olives':      ingredient.name === 'Маслины',
-        'filling--tomatoes':    ingredient.name === 'Томаты',
-        'filling--salmon':      ingredient.name === 'Лосось',
-        'filling--mozzarella':  ingredient.name === 'Моцарелла',
-        'filling--parmesan':    ingredient.name === 'Пармезан',
-        'filling--blue_cheese': ingredient.name === 'Блю чиз',
-      }"
+    :class="fillingIngredientClass"
     class="filling"
   >
     {{ ingredient.name }}
@@ -30,6 +14,44 @@
       ingredient: {
         type: Object,
         required: true,
+      },
+    },
+    computed: {
+      fillingIngredientClass() {
+        switch (this.ingredient.name) {
+          case 'Грибы':
+            return 'filling--mushrooms';
+          case 'Чеддер':
+            return 'filling--cheddar';
+          case 'Салями':
+            return 'filling--salami';
+          case 'Ветчина':
+            return 'filling--ham';
+          case 'Ананас':
+            return 'filling--ananas';
+          case 'Бекон':
+            return 'filling--bacon';
+          case 'Лук':
+            return 'filling--onion';
+          case 'Чили':
+            return 'filling--chile';
+          case 'Халапеньо':
+            return 'filling--jalapeno';
+          case 'Маслины':
+            return 'filling--olives';
+          case 'Томаты':
+            return 'filling--tomatoes';
+          case 'Лосось':
+            return 'filling--salmon';
+          case 'Моцарелла':
+            return 'filling--mozzarella';
+          case 'Пармезан':
+            return 'filling--parmesan';
+          case 'Блю чиз':
+            return 'filling--blue_cheese';
+          default:
+            return '';
+        }
       },
     },
   };
