@@ -96,8 +96,12 @@
       },
     },
     methods: {
-      ingredientCount({ id }) {
-        return this.pizzaOrder.ingredients.find((item) => item.id === id)?.count ?? 0;
+      ingredientCount(id) {
+        let count = 1;
+        if ( this.pizzaOrder.ingredients.find((item) => item.id === id) ) {
+          count = this.pizzaOrder.ingredients.find((item) => item.id === id).count + 1;
+        }
+        return count;
       },
       changeIngredientsCount({ id }) {
         this.$emit("setOrderIngredient", {
