@@ -1,17 +1,27 @@
 <template>
   <div id="app">
-    <Index />
+    <AppLayout
+      :pizzaOrder="pizzaOrder"
+      :pizzaName="pizzaName"
+      :price="price"
+    >
+      <router-view/>
+    </AppLayout>
   </div>
 </template>
 
 <script>
-import Index from "@/views/Index.vue";
 
 export default {
   name: "App",
-  components: {
-    Index,
-  },
+  data() {
+    // temporary solution for props that we will get from vuex later
+    return {
+      pizzaOrder: {},
+      pizzaName: "",
+      price: 0,
+    };
+  }
 };
 </script>
 

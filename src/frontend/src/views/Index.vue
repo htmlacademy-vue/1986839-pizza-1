@@ -1,11 +1,5 @@
 <template>
   <div>
-    <AppLayout
-      :pizzaOrder="pizzaOrder"
-      :pizzaName="pizzaName"
-      :price="price"
-    />
-
     <main class="content">
       <form action="#" method="post">
         <div class="content__wrapper">
@@ -48,7 +42,6 @@
 import misc from "@/static/misc.json";
 import pizza from "@/static/pizza.json";
 import user from "@/static/user.json";
-import AppLayout from "@/layouts/AppLayout";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
@@ -79,7 +72,6 @@ export default {
     };
   },
   components: {
-    AppLayout,
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
