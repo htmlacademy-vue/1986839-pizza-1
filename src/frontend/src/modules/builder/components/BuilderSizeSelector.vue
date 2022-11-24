@@ -19,7 +19,7 @@
             class="visually-hidden"
             :value="size.id"
             :checked="pizzaOrder.sizes.id === size.id"
-            @click="$emit('update:size', $event.target.value)"
+            @click="setPizzaSize($event.target.value)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -30,21 +30,21 @@
 
 <script>
   import RadioButton from "@/common/components/RadioButton";
+  import { mapState, mapMutations } from "vuex";
 
   export default {
     name: "BuilderSizeSelector",
     components: {
       RadioButton,
     },
-    props: {
-      pizza: {
-        type: Object,
-        required: true,
-      },
-      pizzaOrder: {
-        type: Object,
-        required: true,
-      },
+    computed: {
+      ...mapState("Builder", {
+        pizza: "pizza",
+        pizzaOrder: "pizzaOrder"
+      }),
+    },
+    methods: {
+      ...mapMutations("Builder", ["setPizzaSize"]),
     },
   };
 </script>
