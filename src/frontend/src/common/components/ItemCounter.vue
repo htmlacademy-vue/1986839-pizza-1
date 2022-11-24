@@ -3,7 +3,7 @@
     <button
       type="button"
       class="counter__button counter__button--minus"
-      @click="$emit('changeIngredientsCount', { id: ingredient.id, count: itemCounterInputValue-1 })"
+      @click="$emit('changeItemsCount', { id: item.id, count: itemCount-1 })"
       :disabled="buttonMinusDisabled"
     >
       <span class="visually-hidden">Меньше</span>
@@ -12,12 +12,15 @@
       type="text"
       name="counter"
       class="counter__input"
-      :value="itemCounterInputValue"
+      :value="itemCount"
     />
     <button
       type="button"
-      class="counter__button counter__button--plus"
-      @click="$emit('changeIngredientsCount', { id: ingredient.id, count: itemCounterInputValue+1 })"
+      :class="[
+        'counter__button counter__button--plus',
+        isCart ? 'counter__button--orange' : ''
+      ]"
+      @click="$emit('changeItemsCount', { id: item.id, count: itemCount+1 })"
       :disabled="buttonPlusDisabled"
     >
       <span class="visually-hidden">Больше</span>
@@ -27,32 +30,33 @@
 
 <script>
   import { MAX_COUNT_INGREDIENTS } from '@/common/constants';
+  import { mapState } from "vuex";
 
   export default {
     name: "ItemCounter",
     props: {
-      ingredient: {
+      item: {
         type: Object,
         required: true,
       },
-      pizzaOrder: {
-        type: Object,
+      itemCount: {
+        type: Number,
         required: true,
       },
+      isCart: {
+        type: Boolean,
+        required: true,
+      }
     },
     computed: {
+      ...mapState("Builder", {
+        pizzaOrder: "pizzaOrder"
+      }),
       buttonMinusDisabled() {
-        return this.itemCounterInputValue === 0;
+        return this.itemCount === 0;
       },
       buttonPlusDisabled() {
-        return this.itemCounterInputValue === MAX_COUNT_INGREDIENTS;
-      },
-      itemCounterInputValue() {
-        return (
-          this.pizzaOrder.ingredients.filter(
-            (item) => item.id === this.ingredient.id
-          )[0]?.count ?? 0
-        );
+        return !this.isCart && this.itemCount >= MAX_COUNT_INGREDIENTS;
       },
     },
   };

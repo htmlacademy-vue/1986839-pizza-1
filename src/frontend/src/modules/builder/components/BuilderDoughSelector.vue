@@ -19,7 +19,7 @@
             class="visually-hidden"
             :value="dough.id"
             :checked="pizzaOrder.dough.id === dough.id"
-            @click="$emit('update:dough', $event.target.value)"
+            @click="setPizzaDough($event.target.value)"
           />
           <b>{{ dough.name }}</b>
           <span>{{ dough.description }}</span>
@@ -31,21 +31,21 @@
 
 <script>
   import RadioButton from "@/common/components/RadioButton";
+  import { mapState, mapMutations } from "vuex";
 
   export default {
     name: "BuilderDoughSelector",
     components: {
       RadioButton,
     },
-    props: {
-      pizza: {
-        type: Object,
-        required: true,
-      },
-      pizzaOrder: {
-        type: Object,
-        required: true,
-      },
+    computed: {
+      ...mapState("Builder", {
+        pizza: "pizza",
+        pizzaOrder: "pizzaOrder"
+      }),
+    },
+    methods: {
+      ...mapMutations("Builder", ["setPizzaDough"]),
     },
   };
 </script>

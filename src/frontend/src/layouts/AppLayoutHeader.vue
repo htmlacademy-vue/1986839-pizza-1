@@ -11,7 +11,7 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link to="/cart">{{ this.price }} ₽</router-link>
+      <router-link to="/cart">{{ totalPrice }} ₽</router-link>
     </div>
     <div class="header__user">
       <router-link
@@ -50,21 +50,12 @@
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
+
   export default {
     name: "AppLayoutDefault",
-    props: {
-      pizzaOrder: {
-        type: Object,
-        required: true,
-      },
-      pizzaName: {
-        type: String,
-        required: true,
-      },
-      price: {
-        type: Number,
-        required: true,
-      },
+    computed: {
+      ...mapGetters("Cart", ["totalPrice"]),
     },
     data() {
       return {

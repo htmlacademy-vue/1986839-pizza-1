@@ -19,7 +19,7 @@
               class="visually-hidden"
               :value="sauce.id"
               :checked="pizzaOrder.sauces.id === sauce.id"
-              @click="$emit('update:sauce', $event.target.value)"
+              @click="setPizzaSauce($event.target.value)"
             />
             <span>{{ sauce.name }}</span>
           </label>
@@ -40,14 +40,14 @@
               >
                 <SelectorItem
                   :ingredient="ingredient"
-                  :pizzaOrder="pizzaOrder"
                 />
               </AppDrag>
 
               <ItemCounter
-                :ingredient="ingredient"
-                :pizzaOrder="pizzaOrder"
-                @changeIngredientsCount="changeIngredientsCount"
+                :item="ingredient"
+                :itemCount="itemCount(ingredient)"
+                :isCart="false"
+                @changeItemsCount="changeIngredientsCount"
               />
             </li>
           </ul>
@@ -63,6 +63,7 @@
   import AppDrag from "@/common/components/AppDrag";
   import ItemCounter from "@/common/components/ItemCounter";
   import { MAX_COUNT_INGREDIENTS } from '@/common/constants';
+  import { mapState, mapMutations } from "vuex";
 
   export default {
     name: "BuilderIngredientsSelector",
@@ -72,29 +73,33 @@
       AppDrag,
       ItemCounter,
     },
-    props: {
-      pizza: {
-        type: Object,
-        required: true,
-      },
-      pizzaOrder: {
-        type: Object,
-        required: true,
-      },
+    computed: {
+      ...mapState("Builder", {
+        pizza: "pizza",
+        pizzaOrder: "pizzaOrder"
+      }),
     },
     methods: {
+      ...mapMutations("Builder", ["setPizzaSauce", "setPizzaIngredient"]),
       isDraggable({ id }) {
         const isInPizzaOrder = this.pizzaOrder.ingredients.some((item) => item.id === id);
         const isMaxCountIngredients =
-          this.pizzaOrder.ingredients.find((item) => item.id === id)?.count === MAX_COUNT_INGREDIENTS;
+          this.pizzaOrder.ingredients.find((item) => item.id === id)?.count >= MAX_COUNT_INGREDIENTS;
 
         return !(isInPizzaOrder && isMaxCountIngredients);
       },
       changeIngredientsCount({ id, count }) {
-        this.$emit("update:ingredient", {
+        this.setPizzaIngredient({
           id,
           count,
         });
+      },
+      itemCount(ingredient) {
+        return (
+          this.pizzaOrder.ingredients.filter(
+            (item) => item.id === ingredient.id
+          )[0]?.count ?? 0
+        );
       },
     },
   };

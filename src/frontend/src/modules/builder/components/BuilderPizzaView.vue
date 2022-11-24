@@ -7,7 +7,7 @@
           type="text"
           name="pizza_name"
           :value="pizzaName"
-          @input="$emit('setName', $event.target.value)"
+          @input="setPizzaName($event.target.value)"
           placeholder="Введите название пиццы"
         />
       </label>
@@ -49,12 +49,7 @@
         </div>
       </div>
 
-      <BuilderPriceCounter
-        :pizza="pizza"
-        :pizzaOrder="pizzaOrder"
-        :pizzaName="pizzaName"
-        @setOrderPrice="setOrderPrice"
-      />
+      <BuilderPriceCounter />
     </div>
   </AppDrop>
 </template>
@@ -62,28 +57,19 @@
 <script>
   import AppDrop from "@/common/components/AppDrop";
   import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+  import { mapState, mapMutations } from "vuex";
 
   export default {
     name: "BuilderPizzaView",
-    props: {
-      pizza: {
-        type: Object,
-        required: true,
-      },
-      pizzaOrder: {
-        type: Object,
-        required: true,
-      },
-      pizzaName: {
-        type: String,
-        required: true,
-      },
-    },
     components: {
       AppDrop,
       BuilderPriceCounter,
     },
     computed: {
+      ...mapState("Builder", {
+        pizzaOrder: "pizzaOrder",
+        pizzaName: "pizzaName"
+      }),
       doughClass() {
         return this.pizzaOrder.dough.id === 1 ? "small" : "big";
       },
@@ -95,6 +81,7 @@
       },
     },
     methods: {
+      ...mapMutations("Builder", ["setPizzaName", "setPizzaIngredient"]),
       ingredientCount(id) {
         let count = 1;
         if ( this.pizzaOrder.ingredients.find((item) => item.id === id) ) {
@@ -103,13 +90,10 @@
         return count;
       },
       changeIngredientsCount({ id }) {
-        this.$emit("setOrderIngredient", {
+        this.setPizzaIngredient({
           id,
           count: this.ingredientCount(id),
         });
-      },
-      setOrderPrice(price) {
-        this.$emit("setOrderPrice", price);
       },
     },
   };

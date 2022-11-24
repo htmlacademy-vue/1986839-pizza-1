@@ -1,10 +1,6 @@
 <template>
   <div>
-    <AppLayoutHeader
-      :pizzaOrder="pizzaOrder"
-      :pizzaName="pizzaName"
-      :price="price"
-    />
+    <AppLayoutHeader />
     <slot />
   </div>
 </template>
@@ -15,20 +11,6 @@
     name: "AppLayoutMain",
     components: {
       AppLayoutHeader,
-    },
-    props: {
-      pizzaOrder: {
-        type: Object,
-        required: true,
-      },
-      pizzaName: {
-        type: String,
-        required: true,
-      },
-      price: {
-        type: Number,
-        required: true,
-      },
-    },
+    }
   };
 </script>
