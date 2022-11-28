@@ -2,12 +2,30 @@
   <div>
     <main class="layout">
       <div class="layout__sidebar sidebar">
-        <router-link to="/" class="logo layout__logo">
-          <img src="@/assets/img/logo.svg" alt="V!U!E! Pizza logo" width="90" height="40">
+        <router-link
+          :to="{ name: 'index' }"
+          class="logo layout__logo"
+        >
+          <img
+            src="@/assets/img/logo.svg"
+            alt="V!U!E! Pizza logo"
+            width="90"
+            height="40"
+          >
         </router-link>
 
-        <router-link to="/orders" class="layout__link">История заказов</router-link>
-        <router-link to="/profile" class="layout__link layout__link--active">Мои данные</router-link>
+        <router-link
+          :to="{ name: 'orders' }"
+          class="layout__link"
+        >
+          История заказов
+        </router-link>
+        <router-link
+          :to="{ name: 'profile' }"
+          class="layout__link layout__link--active"
+        >
+          Мои данные
+        </router-link>
       </div>
 
       <div class="layout__content">
@@ -43,7 +61,12 @@
             <div class="address-form__header">
               <b>Адрес №1. Тест</b>
               <div class="address-form__edit">
-                <button type="button" class="icon"><span class="visually-hidden">Изменить адрес</span></button>
+                <button
+                  type="button"
+                  class="icon"
+                >
+                  <span class="visually-hidden">Изменить адрес</span>
+                </button>
               </div>
             </div>
             <p>Невский пр., д. 22, кв. 46</p>
@@ -52,7 +75,11 @@
         </div>
 
         <div class="layout__address">
-          <form action="test.html" method="post" class="address-form address-form--opened sheet">
+          <form
+            action="test.html"
+            method="post"
+            class="address-form address-form--opened sheet"
+          >
             <div class="address-form__header">
               <b>Адрес №1</b>
             </div>
@@ -61,44 +88,82 @@
               <div class="address-form__input">
                 <label class="input">
                   <span>Название адреса*</span>
-                  <input type="text" name="addr-name" placeholder="Введите название адреса" required>
+                  <input
+                    type="text"
+                    name="addr-name"
+                    placeholder="Введите название адреса"
+                    required
+                  >
                 </label>
               </div>
               <div class="address-form__input address-form__input--size--normal">
                 <label class="input">
                   <span>Улица*</span>
-                  <input type="text" name="addr-street" placeholder="Введите название улицы" required>
+                  <input
+                    type="text"
+                    name="addr-street"
+                    placeholder="Введите название улицы"
+                    required
+                  >
                 </label>
               </div>
               <div class="address-form__input address-form__input--size--small">
                 <label class="input">
                   <span>Дом*</span>
-                  <input type="text" name="addr-house" placeholder="Введите номер дома" required>
+                  <input
+                    type="text"
+                    name="addr-house"
+                    placeholder="Введите номер дома"
+                    required
+                  >
                 </label>
               </div>
               <div class="address-form__input address-form__input--size--small">
                 <label class="input">
                   <span>Квартира</span>
-                  <input type="text" name="addr-apartment" placeholder="Введите № квартиры">
+                  <input
+                    type="text"
+                    name="addr-apartment"
+                    placeholder="Введите № квартиры"
+                  >
                 </label>
               </div>
               <div class="address-form__input">
                 <label class="input">
                   <span>Комментарий</span>
-                  <input type="text" name="addr-comment" placeholder="Введите комментарий">
+                  <input
+                    type="text"
+                    name="addr-comment"
+                    placeholder="Введите комментарий"
+                  >
                 </label>
               </div>
             </div>
 
             <div class="address-form__buttons">
-              <button type="button" class="button button--transparent">Удалить</button>
-              <button type="submit" class="button">Сохранить</button>
+              <button
+                type="button"
+                class="button button--transparent"
+              >
+                Удалить
+              </button>
+              <button
+                type="submit"
+                class="button"
+              >
+                Сохранить
+              </button>
             </div>
           </form>
         </div>
 
         <div class="layout__button">
-          <button type="button" class="button button--border">Добавить новый адрес</button>
+          <button
+            type="button"
+            class="button button--border"
+          >
+            Добавить новый адрес
+          </button>
         </div>
       </div>
     </main>

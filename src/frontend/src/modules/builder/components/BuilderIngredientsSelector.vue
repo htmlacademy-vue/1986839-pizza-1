@@ -45,8 +45,8 @@
 
               <ItemCounter
                 :item="ingredient"
-                :itemCount="itemCount(ingredient)"
-                :isCart="false"
+                :item-count="itemCount(ingredient)"
+                :is-cart="false"
                 @changeItemsCount="changeIngredientsCount"
               />
             </li>
@@ -74,10 +74,10 @@
       ItemCounter,
     },
     computed: {
-      ...mapState("Builder", {
-        pizza: "pizza",
-        pizzaOrder: "pizzaOrder"
-      }),
+      ...mapState("Builder", [
+        "pizza",
+        "pizzaOrder"
+      ]),
     },
     methods: {
       ...mapMutations("Builder", ["setPizzaSauce", "setPizzaIngredient"]),

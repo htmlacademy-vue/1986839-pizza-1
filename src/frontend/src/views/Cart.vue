@@ -7,12 +7,22 @@
             <h1 class="title title--big">Корзина</h1>
           </div>
 
-          <div class="sheet cart__empty" v-if="pizzaOrderCart.length === 0">
+          <div
+            class="sheet cart__empty"
+            v-if="pizzaOrderCart.length === 0"
+          >
             <p>В корзине нет ни одного товара</p>
           </div>
 
-          <ul class="cart-list sheet" v-if="pizzaOrderCart.length > 0">
-            <li class="cart-list__item" v-for="item in pizzaOrderCart" :key="item.id">
+          <ul
+            class="cart-list sheet"
+            v-if="pizzaOrderCart.length > 0"
+          >
+            <li
+              class="cart-list__item"
+              v-for="item in pizzaOrderCart"
+              :key="item.id"
+            >
               <div class="product cart-list__product">
                 <img
                   src="@/assets/img/product.svg"
@@ -34,8 +44,8 @@
               <div class="counter cart-list__counter">
                 <ItemCounter
                   :item="item"
-                  :itemCount="item.count"
-                  :isCart="true"
+                  :item-count="item.count"
+                  :is-cart="true"
                   @changeItemsCount="changePizzaCount"
                 />
               </div>
@@ -45,7 +55,12 @@
               </div>
 
               <div class="cart-list__button">
-                <button type="button" class="cart-list__edit">Изменить</button>
+                <button
+                  type="button"
+                  class="cart-list__edit"
+                >
+                  Изменить
+                </button>
               </div>
             </li>
           </ul>
@@ -58,7 +73,12 @@
                 class="additional-list__item sheet"
               >
                 <p class="additional-list__description">
-                  <img :src="item.image" width="39" height="60" :alt="item.name">
+                  <img
+                    :src="item.image"
+                    width="39"
+                    height="60"
+                    :alt="item.name"
+                  >
                   <span>{{ item.name }}</span>
                 </p>
 
@@ -66,8 +86,8 @@
                   <div class="counter additional-list__counter">
                     <ItemCounter
                       :item="item"
-                      :itemCount="item.count"
-                      :isCart="true"
+                      :item-count="item.count"
+                      :is-cart="true"
                       @changeItemsCount="changeMiscCount"
                     />
                   </div>
@@ -129,7 +149,12 @@
 
       <section class="footer">
         <div class="footer__more">
-          <router-link to="/" class="button button--border button--arrow">Хочу еще одну</router-link>
+          <router-link
+            :to="{ name: 'login' }"
+            class="button button--border button--arrow"
+          >
+            Хочу еще одну
+          </router-link>
         </div>
         <p class="footer__text">Перейти к конструктору<br>чтоб собрать ещё одну пиццу</p>
         <div class="footer__price">
@@ -137,7 +162,13 @@
         </div>
 
         <div class="footer__submit">
-          <button type="submit" class="button" @click="sendOrder()">Оформить заказ</button>
+          <button
+            type="submit"
+            class="button"
+            @click="sendOrder()"
+          >
+            Оформить заказ
+          </button>
         </div>
       </section>
 

@@ -66,10 +66,10 @@
       BuilderPriceCounter,
     },
     computed: {
-      ...mapState("Builder", {
-        pizzaOrder: "pizzaOrder",
-        pizzaName: "pizzaName"
-      }),
+      ...mapState("Builder", [
+        "pizzaOrder",
+        "pizzaName"
+      ]),
       doughClass() {
         return this.pizzaOrder.dough.id === 1 ? "small" : "big";
       },

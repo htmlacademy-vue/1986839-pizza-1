@@ -38,10 +38,10 @@
       RadioButton,
     },
     computed: {
-      ...mapState("Builder", {
-        pizza: "pizza",
-        pizzaOrder: "pizzaOrder"
-      }),
+      ...mapState("Builder", [
+        "pizza",
+        "pizzaOrder"
+      ]),
     },
     methods: {
       ...mapMutations("Builder", ["setPizzaSize"]),

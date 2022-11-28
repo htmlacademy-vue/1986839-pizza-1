@@ -1,7 +1,14 @@
 <template>
   <div class="content__result">
     <p>Итого: {{ pizzaPrice }} ₽</p>
-    <button type="button" class="button" :disabled="cookButtonIsDisabled" @click="savePizzaOrder()">Готовьте!</button>
+    <button
+      type="button"
+      class="button"
+      :disabled="cookButtonIsDisabled"
+      @click="savePizzaOrder"
+    >
+      Готовьте!
+    </button>
   </div>
 </template>
 
@@ -12,10 +19,10 @@
   export default {
     name: "BuilderPriceCounter",
     computed: {
-      ...mapState("Builder", {
-        pizzaOrder: "pizzaOrder",
-        pizzaName: "pizzaName"
-      }),
+      ...mapState("Builder", [
+        "pizzaOrder",
+        "pizzaName"
+      ]),
       ...mapGetters("Builder", ["pizzaPrice"]),
       cookButtonIsDisabled() {
         return !this.pizzaName.length || !this.pizzaOrder.ingredients.length;
@@ -24,12 +31,12 @@
     methods: {
       ...mapMutations("Builder", ["savePizzaOrderCart"]),
       savePizzaOrder() {
-        let state = this.$store.state.Builder;
-        let pizzaOrderIngredients = [];
+        const state = this.$store.state.Builder;
+        const pizzaOrderIngredients = [];
         for (let i = 0; i < state.pizzaOrder.ingredients.length; i++) {
           pizzaOrderIngredients.push(state.pizzaOrder.ingredients[i].name);
         }
-        let pizzaOrder = {
+        const pizzaOrder = {
           id: uniqueId(),
           pizzaName: state.pizzaName,
           dough: state.pizzaOrder.dough,
@@ -40,7 +47,7 @@
           count: 1,
         };
         this.savePizzaOrderCart(pizzaOrder);
-        this.$router.push("/cart");
+        this.$router.push( {name: 'cart'} );
       },
     },
   };

@@ -1,14 +1,22 @@
 <template>
   <div class="popup">
-    <a href="#" class="close" @click.prevent="$emit('close')">
+    <button
+      class="close"
+      @click.prevent="$emit('close')"
+    >
       <span class="visually-hidden">Закрыть попап</span>
-    </a>
+    </button>
     <div class="popup__title">
       <h2 class="title">Спасибо за заказ</h2>
     </div>
     <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
     <div class="popup__button">
-      <a href="#" class="button" @click.prevent="$emit('close')">Отлично, я жду!</a>
+      <button
+        class="button"
+        @click.prevent="$emit('close')"
+      >
+        Отлично, я жду!
+      </button>
     </div>
   </div>
 </template>
