@@ -6,9 +6,9 @@
         <input
           type="text"
           name="pizza_name"
+          placeholder="Введите название пиццы"
           :value="pizzaName"
           @input="setPizzaName($event.target.value)"
-          placeholder="Введите название пиццы"
         />
       </label>
 
@@ -16,7 +16,7 @@
         <div class="pizza" :class="doughSauceClass">
           <div class="pizza__wrapper">
             <div
-              v-for="ingredient in pizzaOrder.ingredients"
+              v-for="ingredient in pizzaOrderIngredients"
               :key="ingredient.id"
               :class="[
                 {
@@ -55,46 +55,56 @@
 </template>
 
 <script>
-  import AppDrop from "@/common/components/AppDrop";
-  import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
-  import { mapState, mapMutations } from "vuex";
+import AppDrop from "@/common/components/AppDrop";
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import { mapState, mapMutations } from "vuex";
 
-  export default {
-    name: "BuilderPizzaView",
-    components: {
-      AppDrop,
-      BuilderPriceCounter,
+export default {
+  name: "BuilderPizzaView",
+  components: {
+    AppDrop,
+    BuilderPriceCounter,
+  },
+  computed: {
+    ...mapState("Builder", [
+      "pizzaOrderDough",
+      "pizzaOrderSauces",
+      "pizzaOrderIngredients",
+      "pizzaName"
+    ]),
+
+    doughClass() {
+      return this.pizzaOrderDough.id === 1 ? "small" : "big";
     },
-    computed: {
-      ...mapState("Builder", [
-        "pizzaOrder",
-        "pizzaName"
-      ]),
-      doughClass() {
-        return this.pizzaOrder.dough.id === 1 ? "small" : "big";
-      },
-      sauceClass() {
-        return this.pizzaOrder.sauces.id === 1 ? "tomato" : "creamy";
-      },
-      doughSauceClass() {
-        return `pizza--foundation--${this.doughClass}-${this.sauceClass}`;
-      },
+
+    sauceClass() {
+      return this.pizzaOrderSauces.id === 1 ? "tomato" : "creamy";
     },
-    methods: {
-      ...mapMutations("Builder", ["setPizzaName", "setPizzaIngredient"]),
-      ingredientCount(id) {
-        let count = 1;
-        if ( this.pizzaOrder.ingredients.find((item) => item.id === id) ) {
-          count = this.pizzaOrder.ingredients.find((item) => item.id === id).count + 1;
-        }
-        return count;
-      },
-      changeIngredientsCount({ id }) {
-        this.setPizzaIngredient({
-          id,
-          count: this.ingredientCount(id),
-        });
-      },
+
+    doughSauceClass() {
+      return `pizza--foundation--${this.doughClass}-${this.sauceClass}`;
+    }
+  },
+  methods: {
+    ...mapMutations("Builder", [
+      "setPizzaName",
+      "setPizzaIngredient"
+    ]),
+
+    ingredientCount(id) {
+      let count = 1;
+      if ( this.pizzaOrderIngredients.find((item) => item.id === id) ) {
+        count = this.pizzaOrderIngredients.find((item) => item.id === id).count + 1;
+      }
+      return count;
     },
-  };
+
+    changeIngredientsCount({ id }) {
+      this.setPizzaIngredient({
+        id,
+        count: this.ingredientCount(id),
+      });
+    }
+  },
+};
 </script>

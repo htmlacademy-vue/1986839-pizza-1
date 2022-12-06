@@ -24,17 +24,31 @@ import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelec
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+import { mapActions } from "vuex";
 
 export default {
   name: "Index",
-  data() {
-    return {};
-  },
   components: {
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
     BuilderPizzaView,
-  }
+  },
+  created() {
+    this.getDough();
+    this.getSizes();
+    this.getSauces();
+    this.getIngredients();
+    this.getMisc();
+  },
+  methods: {
+    ...mapActions("Builder", [
+      "getDough",
+      "getSizes",
+      "getSauces",
+      "getIngredients"
+    ]),
+    ...mapActions("Cart", ["getMisc"]),
+  },
 };
 </script>

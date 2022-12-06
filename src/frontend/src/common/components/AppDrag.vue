@@ -10,29 +10,30 @@
 </template>
 
 <script>
-  import { DATA_TRANSFER_PAYLOAD, MOVE } from '@/common/constants';
+import { DATA_TRANSFER_PAYLOAD, MOVE } from '@/common/constants';
 
-  export default {
-    name: 'AppDrag',
-    props: {
-      transferData: {
-        type: Object,
-        required: true
-      },
-      draggable: {
-        type: Boolean,
-        default: true,
-      },
+export default {
+  name: 'AppDrag',
+  props: {
+    transferData: {
+      type: Object,
+      required: true
     },
-    methods: {
-      onDrag({ dataTransfer }) {
-        dataTransfer.effectAllowed = MOVE;
-        dataTransfer.dropEffect = MOVE;
-        dataTransfer.setData(
-          DATA_TRANSFER_PAYLOAD,
-          JSON.stringify(this.transferData)
-        );
-      }
+  },
+  computed: {
+    draggable() {
+      return this.transferData;
     }
-  };
+  },
+  methods: {
+    onDrag({ dataTransfer }) {
+      dataTransfer.effectAllowed = MOVE;
+      dataTransfer.dropEffect = MOVE;
+      dataTransfer.setData(
+        DATA_TRANSFER_PAYLOAD,
+        JSON.stringify(this.transferData)
+      );
+    }
+  }
+};
 </script>

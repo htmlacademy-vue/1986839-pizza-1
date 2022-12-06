@@ -2,7 +2,7 @@
   <div class="popup">
     <button
       class="close"
-      @click.prevent="$emit('close')"
+      @click="closePopup"
     >
       <span class="visually-hidden">Закрыть попап</span>
     </button>
@@ -13,7 +13,7 @@
     <div class="popup__button">
       <button
         class="button"
-        @click.prevent="$emit('close')"
+        @click="closePopup"
       >
         Отлично, я жду!
       </button>
@@ -22,7 +22,21 @@
 </template>
 
 <script>
-  export default {
-    name: "CartPopup",
-  };
+import { mapState } from "vuex";
+
+export default {
+  name: "CartPopup",
+  computed: {
+    ...mapState("Auth", ["user"]),
+  },
+  methods: {
+    closePopup() {
+      if (this.user) {
+        this.$router.push({ name: "orders" });
+      } else {
+        this.$router.push({ name: "index" });
+      }
+    },
+  }
+};
 </script>

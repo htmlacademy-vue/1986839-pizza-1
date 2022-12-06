@@ -5,7 +5,7 @@
 
       <div class="sheet__content diameter">
         <label
-          v-for="size in pizza.sizes"
+          v-for="size in pizzaSizes"
           :key="size.id"
           :class="{
             'diameter__input--small': size.multiplier === 1,
@@ -18,7 +18,7 @@
             name="diameter"
             class="visually-hidden"
             :value="size.id"
-            :checked="pizzaOrder.sizes.id === size.id"
+            :checked="pizzaOrderSizes.id === size.id"
             @click="setPizzaSize($event.target.value)"
           />
           <span>{{ size.name }}</span>
@@ -29,22 +29,22 @@
 </template>
 
 <script>
-  import RadioButton from "@/common/components/RadioButton";
-  import { mapState, mapMutations } from "vuex";
+import RadioButton from "@/common/components/RadioButton";
+import { mapState, mapMutations } from "vuex";
 
-  export default {
-    name: "BuilderSizeSelector",
-    components: {
-      RadioButton,
-    },
-    computed: {
-      ...mapState("Builder", [
-        "pizza",
-        "pizzaOrder"
-      ]),
-    },
-    methods: {
-      ...mapMutations("Builder", ["setPizzaSize"]),
-    },
-  };
+export default {
+  name: "BuilderSizeSelector",
+  components: {
+    RadioButton,
+  },
+  computed: {
+    ...mapState("Builder", [
+      "pizzaSizes",
+      "pizzaOrderSizes"
+    ]),
+  },
+  methods: {
+    ...mapMutations("Builder", ["setPizzaSize"]),
+  },
+};
 </script>

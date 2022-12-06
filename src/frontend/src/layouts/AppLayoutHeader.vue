@@ -22,7 +22,7 @@
     </div>
     <div class="header__user">
       <router-link
-        v-if="!isAuthorized"
+        v-if="!user"
         :to="{ name: 'login' }"
         class="header__login"
       >
@@ -35,43 +35,42 @@
         <picture>
           <source
             type="image/webp"
-            srcset="@/assets/img/users/user5.webp 1x, @/assets/img/users/user5@2x.webp 2x"
+            :srcset="user.avatar"
           >
           <img
-            src="@/assets/img/users/user5.jpg"
-            srcset="@/assets/img/users/user5@2x.jpg"
-            alt="Василий Ложкин"
+            :src="user.avatar"
+            :srcset="user.avatar"
+            :alt="user.name"
             width="32"
             height="32"
           >
         </picture>
-        <span>Василий Ложкин</span>
+        <span>{{ user.name }}</span>
       </router-link>
     </div>
     <div class="header__user">
-      <router-link
-        v-if="isAuthorized"
-        to="#"
+      <a
+        v-if="user"
+        href="#"
         class="header__logout"
+        @click="$logout"
       >
         <span>Выйти</span>
-      </router-link>
+      </a>
     </div>
   </header>
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
+import logout from "@/common/mixins/logout";
 
-  export default {
-    name: "AppLayoutDefault",
-    computed: {
-      ...mapGetters("Cart", ["totalPrice"]),
-    },
-    data() {
-      return {
-        isAuthorized: false
-      };
-    },
-  };
+export default {
+  name: "AppLayoutHeader",
+  mixins: [logout],
+  computed: {
+    ...mapGetters("Cart", ["totalPrice"]),
+    ...mapState("Auth", ["user"]),
+  },
+};
 </script>

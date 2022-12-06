@@ -1,6 +1,9 @@
 <template>
   <div>
-<!--    <form action="test.html" method="post" class="layout-form">-->
+    <form
+      class="layout-form"
+      @submit.prevent="sendOrder"
+    >
       <main class="content cart">
         <div class="container">
           <div class="cart__title">
@@ -36,7 +39,7 @@
                   <ul>
                     <li>{{ item.sizes.name }}, тесто: {{ item.dough.name }}</li>
                     <li>Соус: {{ item.sauces.name }}</li>
-                    <li>Начинка: {{ item.ingredients.join(', ') }}</li>
+                    <li>Начинка: {{ pizzaIngredientsName(item.ingredients) }}</li>
                   </ul>
                 </div>
               </div>
@@ -58,6 +61,7 @@
                 <button
                   type="button"
                   class="cart-list__edit"
+                  @click="setPizzaToEdit(item)"
                 >
                   Изменить
                 </button>
@@ -74,9 +78,9 @@
               >
                 <p class="additional-list__description">
                   <img
-                    :src="item.image"
                     width="39"
                     height="60"
+                    :src="item.image"
                     :alt="item.name"
                   >
                   <span>{{ item.name }}</span>
@@ -100,57 +104,16 @@
             </ul>
           </div>
 
-          <div class="cart__form">
-            <div class="cart-form">
-
-              <label class="cart-form__select">
-                <span class="cart-form__label">Получение заказа:</span>
-
-                <select name="test" class="select">
-                  <option value="1">Заберу сам</option>
-                  <option value="2">Новый адрес</option>
-                  <option value="3">Дом</option>
-                </select>
-              </label>
-
-              <label class="input input--big-label">
-                <span>Контактный телефон:</span>
-                <input type="text" name="tel" placeholder="+7 999-999-99-99">
-              </label>
-
-              <div class="cart-form__address">
-                <span class="cart-form__label">Новый адрес:</span>
-
-                <div class="cart-form__input">
-                  <label class="input">
-                    <span>Улица*</span>
-                    <input type="text" name="street">
-                  </label>
-                </div>
-
-                <div class="cart-form__input cart-form__input--small">
-                  <label class="input">
-                    <span>Дом*</span>
-                    <input type="text" name="house">
-                  </label>
-                </div>
-
-                <div class="cart-form__input cart-form__input--small">
-                  <label class="input">
-                    <span>Квартира</span>
-                    <input type="text" name="apartment">
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CartOrder
+            @setAddress="setAddress"
+          ></CartOrder>
         </div>
       </main>
 
       <section class="footer">
         <div class="footer__more">
           <router-link
-            :to="{ name: 'login' }"
+            :to="{ name: 'index' }"
             class="button button--border button--arrow"
           >
             Хочу еще одну
@@ -165,7 +128,6 @@
           <button
             type="submit"
             class="button"
-            @click="sendOrder()"
           >
             Оформить заказ
           </button>
@@ -174,61 +136,140 @@
 
       <CartPopup @close="closePopup" v-if="popupOpen" />
 
-<!--    </form>-->
+    </form>
   </div>
 </template>
 
 <script>
-  import ItemCounter from "@/common/components/ItemCounter";
-  import CartPopup from "@/views/CartPopup";
-  import { mapGetters, mapMutations } from "vuex";
+import ItemCounter from "@/common/components/ItemCounter";
+import CartPopup from "@/views/CartPopup";
+import CartOrder from "@/views/CartOrder";
+import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 
-  export default {
-    name: "Cart",
-    components: {
-      ItemCounter,
-      CartPopup,
+export default {
+  name: "Cart",
+  components: {
+    ItemCounter,
+    CartPopup,
+    CartOrder
+  },
+  data() {
+    return {
+      popupOpen: false,
+      address: null,
+      phone: ""
+    };
+  },
+  computed: {
+    ...mapGetters("Cart", [
+      "misc",
+      "pizzaOrderCart",
+      "getPriceMisc"
+    ]),
+    ...mapState("Auth", ["user"]),
+    ...mapState("Addresses", ["addresses"]),
+    ...mapState("Cart", ["misc"]),
+
+    totalPrice() {
+      let pizzaOrderCartPrice = 0;
+      for (let i = 0; i < this.pizzaOrderCart.length; i++) {
+        pizzaOrderCartPrice = pizzaOrderCartPrice + this.pizzaOrderCart[i].price * this.pizzaOrderCart[i].count;
+      }
+      return pizzaOrderCartPrice + this.getPriceMisc;
+    }
+  },
+  methods: {
+    ...mapMutations("Cart", [
+      "setCountPizza",
+      "setCountMisc",
+      "setTotalPrice"
+    ]),
+    ...mapActions("Orders", ["createOrder"]),
+    ...mapActions("Builder", ["editPizza"]),
+    ...mapActions("Cart", [
+      "resetCartState",
+      "getMisc"
+    ]),
+    pizzaIngredientsName(ingredients) {
+      const ingredientsName = [];
+      for (let i = 0; i < ingredients.length; i++) {
+        ingredientsName.push(ingredients[i].name);
+      }
+      return ingredientsName.join(', ');
     },
-    data() {
-      return {
-        popupOpen: false,
+
+    changeMiscCount({ id, count }) {
+      this.setCountMisc({
+        id,
+        count,
+      });
+    },
+
+    changePizzaCount({ id, count }) {
+      this.setCountPizza({
+        id,
+        count,
+      });
+    },
+
+    closePopup() {
+      this.popupOpen = false;
+    },
+
+    setAddress({ phone, address }) {
+      this.phone = phone;
+      this.address = address;
+    },
+
+    normalizePizzas() {
+      return this.pizzaOrderCart.map((pizzaOrder) => {
+        return {
+          name: pizzaOrder.pizzaName,
+          quantity: pizzaOrder.count,
+          doughId: pizzaOrder.dough.id,
+          sauceId: pizzaOrder.sauces.id,
+          sizeId: pizzaOrder.sizes.id,
+          ingredients: pizzaOrder.ingredients.map((ingredient) => {
+            return {
+              ingredientId: ingredient.id,
+              quantity: ingredient.count,
+            };
+          }),
+        };
+      });
+    },
+
+    normalizeMisc() {
+      return this.misc.map((misc) => {
+        return {
+          miscId: misc.id,
+          quantity: misc.count,
+        };
+      });
+    },
+
+    async setPizzaToEdit(pizza) {
+      this.editPizza(pizza);
+      await this.$router.push({ name: "index" });
+    },
+
+    async sendOrder() {
+      if (this.pizzaOrderCart.length === 0) {
+        return;
+      }
+      this.setTotalPrice(this.totalPrice);
+      this.popupOpen = true;
+      const order = {
+        userId: this.user ? this.user.id : null,
+        phone: this.phone,
+        address: this.address,
+        pizzas: this.normalizePizzas(),
+        misc: this.normalizeMisc(),
       };
-    },
-    computed: {
-      ...mapGetters("Cart", ["misc"]),
-      ...mapGetters("Cart", ["pizzaOrderCart"]),
-      ...mapGetters("Cart", ["getPriceMisc"]),
-      totalPrice: function () {
-        let pizzaOrderCartPrice = 0;
-        for (let i = 0; i < this.pizzaOrderCart.length; i++) {
-          pizzaOrderCartPrice = pizzaOrderCartPrice + this.pizzaOrderCart[i].price * this.pizzaOrderCart[i].count;
-        }
-        return pizzaOrderCartPrice + this.getPriceMisc;
-      },
-    },
-    methods: {
-      ...mapMutations("Cart", ["setCountPizza"]),
-      ...mapMutations("Cart", ["setCountMisc"]),
-      ...mapMutations("Cart", ["setTotalPrice"]),
-      changeMiscCount({ id, count }) {
-        this.setCountMisc({
-          id,
-          count,
-        });
-      },
-      changePizzaCount({ id, count }) {
-        this.setCountPizza({
-          id,
-          count,
-        });
-      },
-      closePopup() {
-        this.popupOpen = false;
-      },
-      sendOrder() {
-        this.setTotalPrice(this.totalPrice);
-        this.popupOpen = true;
-      },
-    },
-  };
+      this.resetCartState();
+      await this.getMisc();
+      await this.createOrder(order);
+    }
+  },
+};
 </script>
