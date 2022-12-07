@@ -36,6 +36,12 @@
           />
         </label>
       </div>
+      <div
+        v-if="showError"
+        class="sign-form__input text-error"
+      >
+        {{ errorText }}
+      </div>
       <button
         type="submit"
         class="button"
@@ -67,7 +73,9 @@ export default {
           error: "",
           rules: ["required"],
         },
-      }
+      },
+      showError: false,
+      errorText: ""
     };
   },
   watch: {
@@ -92,9 +100,20 @@ export default {
       await this.$store.dispatch('Auth/login', {
         email: this.email,
         password: this.password
-      });
-      await this.$router.push({name: "index"});
+      }).then(() => {
+        this.showError = false;
+        this.$router.push({ name: "index" });
+      }).catch((error) => {
+        this.showError = true;
+        this.errorText = error.response.data.error.message;
+      })
     }
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .text-error {
+    color: $red-600;
+  }
+</style>
