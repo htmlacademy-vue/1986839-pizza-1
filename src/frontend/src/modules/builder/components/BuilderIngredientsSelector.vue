@@ -10,7 +10,7 @@
           <p>Основной соус:</p>
 
           <label
-            v-for="sauce in pizza.sauces"
+            v-for="sauce in pizzaSauces"
             :key="sauce.id"
             class="radio ingredients__input"
           >
@@ -18,7 +18,7 @@
               name="sauce"
               class="visually-hidden"
               :value="sauce.id"
-              :checked="pizzaOrder.sauces.id === sauce.id"
+              :checked="pizzaOrderSauces.id === sauce.id"
               @click="setPizzaSauce($event.target.value)"
             />
             <span>{{ sauce.name }}</span>
@@ -30,7 +30,7 @@
 
           <ul class="ingredients__list">
             <li
-              v-for="ingredient in pizza.ingredients"
+              v-for="ingredient in pizzaIngredients"
               :key="ingredient.id"
               class="ingredients__item"
             >
@@ -45,8 +45,8 @@
 
               <ItemCounter
                 :item="ingredient"
-                :itemCount="itemCount(ingredient)"
-                :isCart="false"
+                :item-count="itemCount(ingredient)"
+                :is-cart="false"
                 @changeItemsCount="changeIngredientsCount"
               />
             </li>
@@ -58,49 +58,57 @@
 </template>
 
 <script>
-  import RadioButton from "@/common/components/RadioButton";
-  import SelectorItem from "@/common/components/SelectorItem";
-  import AppDrag from "@/common/components/AppDrag";
-  import ItemCounter from "@/common/components/ItemCounter";
-  import { MAX_COUNT_INGREDIENTS } from '@/common/constants';
-  import { mapState, mapMutations } from "vuex";
+import RadioButton from "@/common/components/RadioButton";
+import SelectorItem from "@/common/components/SelectorItem";
+import AppDrag from "@/common/components/AppDrag";
+import ItemCounter from "@/common/components/ItemCounter";
+import { MAX_COUNT_INGREDIENTS } from '@/common/constants';
+import { mapState, mapMutations } from "vuex";
 
-  export default {
-    name: "BuilderIngredientsSelector",
-    components: {
-      RadioButton,
-      SelectorItem,
-      AppDrag,
-      ItemCounter,
-    },
-    computed: {
-      ...mapState("Builder", {
-        pizza: "pizza",
-        pizzaOrder: "pizzaOrder"
-      }),
-    },
-    methods: {
-      ...mapMutations("Builder", ["setPizzaSauce", "setPizzaIngredient"]),
-      isDraggable({ id }) {
-        const isInPizzaOrder = this.pizzaOrder.ingredients.some((item) => item.id === id);
-        const isMaxCountIngredients =
-          this.pizzaOrder.ingredients.find((item) => item.id === id)?.count >= MAX_COUNT_INGREDIENTS;
+export default {
+  name: "BuilderIngredientsSelector",
+  components: {
+    RadioButton,
+    SelectorItem,
+    AppDrag,
+    ItemCounter,
+  },
+  computed: {
+    ...mapState("Builder", [
+      "pizzaSauces",
+      "pizzaIngredients",
+      "pizzaOrderSauces",
+      "pizzaOrderIngredients"
+    ]),
+  },
+  methods: {
+    ...mapMutations("Builder", [
+      "setPizzaSauce",
+      "setPizzaIngredient"
+    ]),
 
-        return !(isInPizzaOrder && isMaxCountIngredients);
-      },
-      changeIngredientsCount({ id, count }) {
-        this.setPizzaIngredient({
-          id,
-          count,
-        });
-      },
-      itemCount(ingredient) {
-        return (
-          this.pizzaOrder.ingredients.filter(
-            (item) => item.id === ingredient.id
-          )[0]?.count ?? 0
-        );
-      },
+    isDraggable({ id }) {
+      const isInPizzaOrder = this.pizzaOrderIngredients.some((item) => item.id === id);
+      const isMaxCountIngredients =
+        this.pizzaOrderIngredients.find((item) => item.id === id)?.count >= MAX_COUNT_INGREDIENTS;
+
+      return !(isInPizzaOrder && isMaxCountIngredients);
     },
-  };
+
+    changeIngredientsCount({ id, count }) {
+      this.setPizzaIngredient({
+        id,
+        count,
+      });
+    },
+
+    itemCount(ingredient) {
+      return (
+        this.pizzaOrderIngredients.filter(
+          (item) => item.id === ingredient.id
+        )[0]?.count ?? 0
+      );
+    }
+  },
+};
 </script>

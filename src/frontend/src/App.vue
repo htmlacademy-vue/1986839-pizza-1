@@ -1,15 +1,22 @@
 <template>
   <div id="app">
     <AppLayout>
-      <router-view/>
+      <router-view />
     </AppLayout>
   </div>
 </template>
 
 <script>
+import { setAuth } from "./common/helpers";
 
 export default {
-  name: "App"
+  name: "App",
+
+  created() {
+    if (this.$jwt.getToken()) {
+      setAuth(this.$store);
+    }
+  },
 };
 </script>
 

@@ -5,7 +5,7 @@
 
       <div class="sheet__content dough">
         <label
-          v-for="dough in pizza.dough"
+          v-for="dough in pizzaDough"
           :key="dough.id"
           :class="
             dough.name === 'Тонкое'
@@ -18,7 +18,7 @@
             name="dought"
             class="visually-hidden"
             :value="dough.id"
-            :checked="pizzaOrder.dough.id === dough.id"
+            :checked="pizzaOrderDough.id === dough.id"
             @click="setPizzaDough($event.target.value)"
           />
           <b>{{ dough.name }}</b>
@@ -30,22 +30,22 @@
 </template>
 
 <script>
-  import RadioButton from "@/common/components/RadioButton";
-  import { mapState, mapMutations } from "vuex";
+import RadioButton from "@/common/components/RadioButton";
+import { mapState, mapMutations } from "vuex";
 
-  export default {
-    name: "BuilderDoughSelector",
-    components: {
-      RadioButton,
-    },
-    computed: {
-      ...mapState("Builder", {
-        pizza: "pizza",
-        pizzaOrder: "pizzaOrder"
-      }),
-    },
-    methods: {
-      ...mapMutations("Builder", ["setPizzaDough"]),
-    },
-  };
+export default {
+  name: "BuilderDoughSelector",
+  components: {
+    RadioButton,
+  },
+  computed: {
+    ...mapState("Builder", [
+      "pizzaDough",
+      "pizzaOrderDough"
+    ]),
+  },
+  methods: {
+    ...mapMutations("Builder", ["setPizzaDough"]),
+  },
+};
 </script>

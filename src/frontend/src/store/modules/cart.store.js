@@ -1,21 +1,31 @@
-import misc from "@/static/misc.json";
-import builder from "@/store/modules/builder.store";
+import {
+  ADD_ENTITY,
+  SET_ENTITY,
+  UPDATE_ENTITY,
+  RESET_CART_STATE
+} from "@/store/mutations-types";
+
+import { uniqueId } from "lodash";
+
+const initState = () => ({
+  misc: [],
+  pizzaOrderCart: [],
+  totalPrice: 0,
+});
 
 export default {
   namespaced: true,
-  state: {
-    misc: misc,
-    pizzaOrderCart: builder.state.pizzaOrderCart,
-    totalPrice: 0,
-  },
+  state: initState(),
   getters: {
     misc(state) {
       state.misc = state.misc.map((el) => ({ ...el, count: 0 }));
       return state.misc;
     },
+
     pizzaOrderCart(state) {
       return state.pizzaOrderCart;
     },
+
     getPriceMisc(state) {
       let sumPriceMisc = 0;
       for (let i = 0; i < state.misc.length; i++) {
@@ -23,9 +33,10 @@ export default {
       }
       return sumPriceMisc;
     },
+
     totalPrice(state) {
       return state.totalPrice;
-    },
+    }
   },
   mutations: {
     setCountPizza(state, item) {
@@ -35,6 +46,7 @@ export default {
         }
       });
     },
+
     setCountMisc(state, item) {
       state.misc.forEach((el) => {
         if (item.id === el.id) {
@@ -42,9 +54,48 @@ export default {
         }
       });
     },
+
     setTotalPrice(state, value) {
       state.totalPrice = value;
     },
+
+    [RESET_CART_STATE](state) {
+      Object.assign(state, initState());
+    }
   },
-  actions: {},
+  actions: {
+    savePizzaOrderCart({ commit }, pizzaOrder) {
+      commit(
+        pizzaOrder.id ? UPDATE_ENTITY : ADD_ENTITY,
+        {
+          module: "Cart",
+          entity: "pizzaOrderCart",
+          value: pizzaOrder.id ? pizzaOrder : { ...pizzaOrder, id: uniqueId() }
+        },
+        { root: true }
+      );
+    },
+
+    async getMisc({ commit }) {
+      const data = await this.$api.misc.query();
+      const items = data.map((item) => ({ ...item, count: 0 }));
+      commit(
+        SET_ENTITY,
+        { module: "Cart", entity: "misc", value: items },
+        { root: true }
+      );
+    },
+
+    changeMiscItemCount({ commit }, misc) {
+      commit(
+        UPDATE_ENTITY,
+        { module: "Cart", entity: "misc", value: misc },
+        { root: true }
+      );
+    },
+
+    resetCartState({ commit }) {
+      commit(RESET_CART_STATE);
+    }
+  },
 };
