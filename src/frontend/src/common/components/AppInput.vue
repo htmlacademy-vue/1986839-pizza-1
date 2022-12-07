@@ -82,7 +82,7 @@ export default {
     }
     &__text {
       position: absolute;
-      bottom: -12px;
+      bottom: -20px;
       left: 0;
       color: $red-600;
     }

@@ -52,6 +52,7 @@ export default {
         ingredients: state.pizzaOrderIngredients,
         price: this.pizzaPrice,
         count: 1,
+        id: state.id,
       };
       this.savePizzaOrderCart(pizzaOrder);
 

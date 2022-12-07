@@ -17,7 +17,8 @@ const initState = () => ({
   pizzaOrderSizes: [],
   pizzaOrderSauces: [],
   pizzaOrderIngredients: [],
-  pizzaName: ""
+  pizzaName: "",
+  id: null
 });
 
 export default {
@@ -145,7 +146,8 @@ export default {
         pizzaOrderSizes: pizza.sizes,
         pizzaOrderSauces: pizza.sauces,
         pizzaOrderIngredients: pizza.ingredients,
-        pizzaName: pizza.pizzaName
+        pizzaName: pizza.pizzaName,
+        id: pizza.id
       };
       commit(EDIT_PIZZA, newState);
     },

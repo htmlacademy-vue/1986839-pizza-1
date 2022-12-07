@@ -175,6 +175,7 @@ export default {
       for (let i = 0; i < this.pizzaOrderCart.length; i++) {
         pizzaOrderCartPrice = pizzaOrderCartPrice + this.pizzaOrderCart[i].price * this.pizzaOrderCart[i].count;
       }
+      this.setTotalPrice(pizzaOrderCartPrice + this.getPriceMisc);
       return pizzaOrderCartPrice + this.getPriceMisc;
     }
   },
@@ -257,7 +258,6 @@ export default {
       if (this.pizzaOrderCart.length === 0) {
         return;
       }
-      this.setTotalPrice(this.totalPrice);
       this.popupOpen = true;
       const order = {
         userId: this.user ? this.user.id : null,
