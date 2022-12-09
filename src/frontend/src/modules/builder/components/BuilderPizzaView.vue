@@ -15,36 +15,38 @@
       <div class="content__constructor">
         <div class="pizza" :class="doughSauceClass">
           <div class="pizza__wrapper">
-            <div
-              v-for="ingredient in pizzaOrderIngredients"
-              :key="ingredient.id"
-              :class="[
-                {
-                  'pizza__filling--mushrooms':   ingredient.name === 'Грибы',
-                  'pizza__filling--cheddar':     ingredient.name === 'Чеддер',
-                  'pizza__filling--salami':      ingredient.name === 'Салями',
-                  'pizza__filling--ham':         ingredient.name === 'Ветчина',
-                  'pizza__filling--ananas':      ingredient.name === 'Ананас',
-                  'pizza__filling--bacon':       ingredient.name === 'Бекон',
-                  'pizza__filling--onion':       ingredient.name === 'Лук',
-                  'pizza__filling--chile':       ingredient.name === 'Чили',
-                  'pizza__filling--jalapeno':    ingredient.name === 'Халапеньо',
-                  'pizza__filling--olives':      ingredient.name === 'Маслины',
-                  'pizza__filling--tomatoes':    ingredient.name === 'Томаты',
-                  'pizza__filling--salmon':      ingredient.name === 'Лосось',
-                  'pizza__filling--mozzarella':  ingredient.name === 'Моцарелла',
-                  'pizza__filling--parmesan':    ingredient.name === 'Пармезан',
-                  'pizza__filling--blue_cheese': ingredient.name === 'Блю чиз',
-                },
-                {
-                  'pizza__filling--second': ingredient.count === 2 || ingredient.count === 3,
-                },
-                {
-                  'pizza__filling--third': ingredient.count === 3,
-                },
-              ]"
-              class="pizza__filling"
-            />
+            <transition-group name="ingredients">
+              <div
+                v-for="ingredient in pizzaOrderIngredients"
+                :key="ingredient.id"
+                :class="[
+                  {
+                    'pizza__filling--mushrooms':   ingredient.name === 'Грибы',
+                    'pizza__filling--cheddar':     ingredient.name === 'Чеддер',
+                    'pizza__filling--salami':      ingredient.name === 'Салями',
+                    'pizza__filling--ham':         ingredient.name === 'Ветчина',
+                    'pizza__filling--ananas':      ingredient.name === 'Ананас',
+                    'pizza__filling--bacon':       ingredient.name === 'Бекон',
+                    'pizza__filling--onion':       ingredient.name === 'Лук',
+                    'pizza__filling--chile':       ingredient.name === 'Чили',
+                    'pizza__filling--jalapeno':    ingredient.name === 'Халапеньо',
+                    'pizza__filling--olives':      ingredient.name === 'Маслины',
+                    'pizza__filling--tomatoes':    ingredient.name === 'Томаты',
+                    'pizza__filling--salmon':      ingredient.name === 'Лосось',
+                    'pizza__filling--mozzarella':  ingredient.name === 'Моцарелла',
+                    'pizza__filling--parmesan':    ingredient.name === 'Пармезан',
+                    'pizza__filling--blue_cheese': ingredient.name === 'Блю чиз',
+                  },
+                  {
+                    'pizza__filling--second': ingredient.count === 2 || ingredient.count === 3,
+                  },
+                  {
+                    'pizza__filling--third': ingredient.count === 3,
+                  },
+                ]"
+                class="pizza__filling"
+              />
+            </transition-group>
           </div>
         </div>
       </div>
@@ -108,3 +110,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  // Transitions
+  .ingredients-enter-active,
+  .ingredients-leave-active {
+    transition: all $animationSpeed ease;
+  }
+  .ingredients-enter,
+  .ingredients-leave-to {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+</style>

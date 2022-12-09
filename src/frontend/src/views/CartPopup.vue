@@ -31,12 +31,8 @@ export default {
   },
   methods: {
     closePopup() {
-      if (this.user) {
-        this.$router.push({ name: "orders" });
-      } else {
-        this.$router.push({ name: "index" });
-      }
-    },
+      this.$emit("closePopup");
+    }
   }
 };
 </script>
