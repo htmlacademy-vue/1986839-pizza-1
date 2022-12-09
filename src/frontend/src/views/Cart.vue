@@ -134,7 +134,17 @@
         </div>
       </section>
 
-      <CartPopup @close="closePopup" v-if="popupOpen" />
+      <transition
+        name="popup"
+        appear
+        enter-active-class="animate__animated animate__fadeIn"
+        leave-active-class="animate__animated animate__fadeOut"
+      >
+        <CartPopup
+          v-if="popupOpen"
+          @closePopup="closePopup"
+        />
+      </transition>
 
     </form>
   </div>
@@ -215,6 +225,10 @@ export default {
 
     closePopup() {
       this.popupOpen = false;
+      setTimeout(
+        () => this.$router.push({ name: this.user ? "orders" : "index" }),
+        500
+      );
     },
 
     setAddress({ phone, address }) {
