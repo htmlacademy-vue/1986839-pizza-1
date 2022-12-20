@@ -1,11 +1,13 @@
 <template>
   <div class="sign-form">
-    <router-link
+    <a
       :to="{ name: 'index' }"
       class="close close--white"
+      data-test="close"
+      @click="closeDialog"
     >
       <span class="visually-hidden">Закрыть форму авторизации</span>
-    </router-link>
+    </a>
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
@@ -19,6 +21,7 @@
             type="email"
             name="email"
             placeholder="example@mail.ru"
+            data-test="email-component"
             :error-text="validations.email.error"
           />
         </label>
@@ -32,15 +35,10 @@
             type="password"
             name="pass"
             placeholder="***********"
+            data-test="password-component"
             :error-text="validations.password.error"
           />
         </label>
-      </div>
-      <div
-        v-if="showError"
-        class="sign-form__input text-error"
-      >
-        {{ errorText }}
       </div>
       <button
         type="submit"
@@ -73,9 +71,7 @@ export default {
           error: "",
           rules: ["required"],
         },
-      },
-      showError: false,
-      errorText: ""
+      }
     };
   },
   watch: {
@@ -100,20 +96,12 @@ export default {
       await this.$store.dispatch('Auth/login', {
         email: this.email,
         password: this.password
-      }).then(() => {
-        this.showError = false;
-        this.$router.push({ name: "index" });
-      }).catch((error) => {
-        this.showError = true;
-        this.errorText = error.response.data.error.message;
-      })
-    }
+      });
+      await this.$router.push({name: "index"});
+    },
+    closeDialog() {
+      this.$router.push({ name: 'index' });
+    },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-  .text-error {
-    color: $red-600;
-  }
-</style>

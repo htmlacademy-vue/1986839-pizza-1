@@ -40,11 +40,11 @@ const actions = {
 
   async fetchUser({ commit }) {
     const user = await this.$api.user.query();
-    commit(SET_ENTITY, { module: null, entity: "user", value: user });
+    commit(SET_ENTITY, { module: "Auth", entity: "user", value: user });
   },
 };
 
-const mutations = {
+export const mutations = {
   [ADD_NOTIFICATION](state, notification) {
     state.notifications = [...state.notifications, notification];
   },

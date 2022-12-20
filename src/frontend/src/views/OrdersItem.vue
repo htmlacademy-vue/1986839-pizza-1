@@ -9,7 +9,10 @@
         <span>Сумма заказа: {{ orderPrice }} ₽</span>
       </div>
 
-      <form @submit="deleteOrder(order.id)">
+      <form
+        data-test="delete-button"
+        @submit="deleteOrder(order.id)"
+      >
         <div class="order__button">
           <button
             type="submit"
@@ -23,6 +26,7 @@
       <div class="order__button">
         <button
           class="button"
+          data-test="repeat-order-button"
           @click="repeatOrder"
         >
           Повторить

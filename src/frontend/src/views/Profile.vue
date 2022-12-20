@@ -33,7 +33,10 @@
           <h1 class="title title--big">Мои данные</h1>
         </div>
 
-        <div class="user">
+        <div
+          v-if="user"
+          class="user"
+        >
           <picture>
             <source
               type="image/webp"
@@ -64,21 +67,27 @@
             v-if="address.id === editableAddressId"
             :address="address"
             :user="user"
+            data-test="address-edit-form"
           />
-          <div v-else class="sheet address-form">
+          <div
+            v-else
+            data-test="address-form"
+            class="sheet address-form"
+          >
             <div class="address-form__header">
               <b>Адрес №{{ address.id }}. {{ address.name }}</b>
               <div class="address-form__edit">
                 <button
                   type="button"
                   class="icon"
+                  data-test="address-edit-button"
                   @click="openFormToEdit(address.id)"
                 >
                   <span class="visually-hidden">Изменить адрес</span>
                 </button>
               </div>
             </div>
-            <p>ул. {{ address.street }}, д. {{ address.building }}, кв. {{ address.flat }}</p>
+            <p>ул. {{ address.street }}, д. {{ address.building }}{{ address.flat ? ", кв. " + address.flat : "" }}</p>
             <small>{{ address.comment }}</small>
           </div>
         </div>
@@ -90,6 +99,7 @@
           <ProfileAddress
             :address="newAddressData"
             :user="user"
+            data-test="address-add-form"
           />
         </div>
 
@@ -97,6 +107,7 @@
           <button
             type="button"
             class="button button--border"
+            data-test="address-add-button"
             @click="openNewAddressForm"
           >
             Добавить новый адрес
@@ -139,10 +150,7 @@ export default {
     ...mapState("Addresses", ["addresses"]),
   },
   methods: {
-    ...mapActions("Addresses", [
-      "getAddresses",
-      "saveAddress"
-    ]),
+    ...mapActions("Addresses", ["getAddresses"]),
 
     openFormToEdit(id) {
       this.newAddressForm = false;

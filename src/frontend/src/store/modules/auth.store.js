@@ -1,4 +1,4 @@
-import { SET_ENTITY } from "@/store/mutations-types.js";
+import { SET_ENTITY } from "@/store/mutations-types";
 
 export default {
   namespaced: true,
