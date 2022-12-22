@@ -2,7 +2,7 @@
   <div :key="address.id">
     <form
       class="address-form address-form--opened sheet"
-      @submit.prevent="saveAddress"
+      @submit="saveAddress"
     >
       <div class="address-form__header">
         <b>{{ title }}</b>
@@ -18,6 +18,7 @@
               name="addr-name"
               placeholder="Введите название адреса"
               required
+              data-test="address-name"
             />
           </label>
         </div>
@@ -30,6 +31,7 @@
               name="addr-street"
               placeholder="Введите название улицы"
               required
+              data-test="address-street"
             />
           </label>
         </div>
@@ -42,6 +44,7 @@
               name="addr-house"
               placeholder="Введите номер дома"
               required
+              data-test="address-building"
             />
           </label>
         </div>
@@ -53,6 +56,7 @@
               type="text"
               name="addr-apartment"
               placeholder="Введите № квартиры"
+              data-test="address-flat"
             />
           </label>
         </div>
@@ -64,6 +68,7 @@
               type="text"
               name="addr-comment"
               placeholder="Введите комментарий"
+              data-test="address-comment"
             />
           </label>
         </div>
@@ -74,11 +79,18 @@
           v-if="isAddressEdited"
           type="submit"
           class="button button--transparent"
+          data-test="address-delete-button"
           @click="deleteAddress(address.id)"
         >
           Удалить
         </button>
-        <button type="submit" class="button">Сохранить</button>
+        <button
+          type="submit"
+          class="button"
+          data-test="save-button"
+        >
+          Сохранить
+        </button>
       </div>
     </form>
   </div>
@@ -135,7 +147,7 @@ export default {
       "deleteAddress"
     ]),
 
-    saveAddress($event) {
+    saveAddress() {
       const address = {
         ...this.address,
         name: this.name,
@@ -150,7 +162,6 @@ export default {
       } else {
         this.addAddress(address);
       }
-      $event.target.submit();
     }
   }
 };

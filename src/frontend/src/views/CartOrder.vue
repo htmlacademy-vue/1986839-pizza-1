@@ -7,6 +7,7 @@
         <select
           name="test"
           class="select"
+          data-test="cart-form-select"
           @change="changeAddress($event.target.value)"
         >
           <option value="pickup">Заберу сам</option>
@@ -15,6 +16,7 @@
             v-for="address in addresses"
             :key="address.id"
             :value="address.id"
+            data-test="user-addresses"
           >
             {{ address.name }}
           </option>
@@ -35,6 +37,7 @@
       <div
         v-if="isAddressFormDisplayed"
         class="cart-form__address"
+        data-test="cart-form-address"
       >
         <span class="cart-form__label">{{ addressFormName }}:</span>
 

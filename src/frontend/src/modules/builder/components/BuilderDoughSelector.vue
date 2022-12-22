@@ -19,6 +19,7 @@
             class="visually-hidden"
             :value="dough.id"
             :checked="pizzaOrderDough.id === dough.id"
+            data-test="dough-selector"
             @click="setPizzaDough($event.target.value)"
           />
           <b>{{ dough.name }}</b>

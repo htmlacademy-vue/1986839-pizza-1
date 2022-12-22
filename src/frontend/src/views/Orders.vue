@@ -58,8 +58,8 @@ export default {
     ...mapState("Orders", ["orders"]),
   },
   async created() {
-    await this.getSauces();
     await this.getDough();
+    await this.getSauces();
     await this.getSizes();
     await this.getIngredients();
     await this.getMisc();

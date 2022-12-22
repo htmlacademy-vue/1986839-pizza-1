@@ -22,15 +22,17 @@
     </div>
     <div class="header__user">
       <router-link
-        v-if="!user"
+        v-if="!isAuthenticated"
         :to="{ name: 'login' }"
         class="header__login"
+        data-test="header-login"
       >
         <span>Войти</span>
       </router-link>
       <router-link
         v-else
         :to="{ name: 'profile' }"
+        data-test="profile-link"
       >
         <picture>
           <source
@@ -50,9 +52,10 @@
     </div>
     <div class="header__user">
       <a
-        v-if="user"
+        v-if="isAuthenticated"
         href="#"
         class="header__logout"
+        data-test="header-logout"
         @click="$logout"
       >
         <span>Выйти</span>
@@ -70,7 +73,7 @@ export default {
   mixins: [logout],
   computed: {
     ...mapGetters("Cart", ["totalPrice"]),
-    ...mapState("Auth", ["user"]),
+    ...mapState("Auth", ["user", "isAuthenticated"]),
   },
 };
 </script>

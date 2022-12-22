@@ -2,6 +2,7 @@
   <div class="popup">
     <button
       class="close"
+      data-test="close-button"
       @click="closePopup"
     >
       <span class="visually-hidden">Закрыть попап</span>

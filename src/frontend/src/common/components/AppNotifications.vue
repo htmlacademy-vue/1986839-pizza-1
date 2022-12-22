@@ -36,10 +36,11 @@ export default {
     &__wrapper {
       position: fixed;
       z-index: 9999;
-      top: $header-height;
-      right: 0;
       width: 420px;
       padding: 10px;
+      top: 80%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
     &--info {
       border-color: $blue-600;

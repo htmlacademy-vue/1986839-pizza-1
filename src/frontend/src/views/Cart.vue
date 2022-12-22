@@ -13,6 +13,7 @@
           <div
             class="sheet cart__empty"
             v-if="pizzaOrderCart.length === 0"
+            data-test="cart-empty"
           >
             <p>В корзине нет ни одного товара</p>
           </div>
@@ -20,6 +21,7 @@
           <ul
             class="cart-list sheet"
             v-if="pizzaOrderCart.length > 0"
+            data-test="cart-list"
           >
             <li
               class="cart-list__item"
@@ -61,6 +63,7 @@
                 <button
                   type="button"
                   class="cart-list__edit"
+                  data-test="item-edit-button"
                   @click="setPizzaToEdit(item)"
                 >
                   Изменить
@@ -105,6 +108,7 @@
           </div>
 
           <CartOrder
+            data-test="cart-order"
             @setAddress="setAddress"
           ></CartOrder>
         </div>
@@ -119,7 +123,9 @@
             Хочу еще одну
           </router-link>
         </div>
-        <p class="footer__text">Перейти к конструктору<br>чтоб собрать ещё одну пиццу</p>
+        <p class="footer__text">
+          Перейти к конструктору<br>чтоб собрать ещё одну пиццу
+        </p>
         <div class="footer__price">
           <b>Итого: {{ totalPrice }} ₽</b>
         </div>
@@ -142,6 +148,7 @@
       >
         <CartPopup
           v-if="popupOpen"
+          data-test="cart-popup"
           @closePopup="closePopup"
         />
       </transition>

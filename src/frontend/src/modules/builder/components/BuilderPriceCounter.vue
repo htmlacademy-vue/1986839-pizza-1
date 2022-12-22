@@ -5,6 +5,7 @@
       type="button"
       class="button"
       :disabled="cookButtonIsDisabled"
+      data-test="cook-button"
       @click="savePizzaOrder"
     >
       Готовьте!

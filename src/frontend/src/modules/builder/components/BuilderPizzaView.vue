@@ -1,5 +1,8 @@
 <template>
-  <AppDrop @drop="changeIngredientsCount">
+  <AppDrop
+    data-test="pizza-wrapper"
+    @drop="changeIngredientsCount"
+  >
     <div class="content__pizza">
       <label class="input">
         <span class="visually-hidden">Название пиццы</span>
@@ -8,6 +11,7 @@
           name="pizza_name"
           placeholder="Введите название пиццы"
           :value="pizzaName"
+          data-test="pizza-name"
           @input="setPizzaName($event.target.value)"
         />
       </label>

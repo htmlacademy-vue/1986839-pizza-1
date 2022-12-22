@@ -19,6 +19,7 @@
             class="visually-hidden"
             :value="size.id"
             :checked="pizzaOrderSizes.id === size.id"
+            data-test="size-selector"
             @click="setPizzaSize($event.target.value)"
           />
           <span>{{ size.name }}</span>

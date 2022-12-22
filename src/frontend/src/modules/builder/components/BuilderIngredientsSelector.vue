@@ -19,6 +19,7 @@
               class="visually-hidden"
               :value="sauce.id"
               :checked="pizzaOrderSauces.id === sauce.id"
+              data-test="sauce-selector"
               @click="setPizzaSauce($event.target.value)"
             />
             <span>{{ sauce.name }}</span>
