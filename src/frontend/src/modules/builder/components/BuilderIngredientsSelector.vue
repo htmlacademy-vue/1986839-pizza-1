@@ -35,14 +35,14 @@
               :key="ingredient.id"
               class="ingredients__item"
             >
-              <AppDrag
+              <app-drag
                 :transfer-data="ingredient"
                 :draggable="isDraggable(ingredient)"
               >
                 <SelectorItem
                   :ingredient="ingredient"
                 />
-              </AppDrag>
+              </app-drag>
 
               <ItemCounter
                 :item="ingredient"

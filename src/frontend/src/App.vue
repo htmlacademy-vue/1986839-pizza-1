@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AppLayout>
+    <app-layout>
       <transition
         name="slide"
         :appear="isAppear"
@@ -8,7 +8,7 @@
       >
         <router-view />
       </transition>
-    </AppLayout>
+    </app-layout>
   </div>
 </template>
 
