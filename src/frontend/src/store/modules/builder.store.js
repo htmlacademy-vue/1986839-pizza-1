@@ -41,6 +41,11 @@ export default {
       };
     },
     setPizzaIngredient(state, { id, count }) {
+      const ingredientIndex = state.pizzaIngredients.findIndex(
+        (item) => item.id === id
+      );
+      state.pizzaIngredients[ingredientIndex].count = count;
+
       const itemIndex = state.pizzaOrderIngredients.findIndex(
         (item) => item.id === id
       );
@@ -134,9 +139,12 @@ export default {
     },
     async getIngredients({ commit }) {
       const ingredients = await this.$api.builder.fetchIngredients();
+      const ingredientsMap = ingredients.map(
+        (ingredient) => ({ ...ingredient, count: 0 })
+      );
       commit(
         SET_ENTITY,
-        { module: "Builder", entity: "pizzaIngredients", value: ingredients },
+        { module: "Builder", entity: "pizzaIngredients", value: ingredientsMap },
         { root: true }
       );
     },
