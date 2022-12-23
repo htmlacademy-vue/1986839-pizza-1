@@ -46,7 +46,7 @@
 
               <ItemCounter
                 :item="ingredient"
-                :item-count="itemCount(ingredient)"
+                :item-count="ingredient.count"
                 :is-cart="false"
                 @changeItemsCount="changeIngredientsCount"
               />
@@ -88,12 +88,8 @@ export default {
       "setPizzaIngredient"
     ]),
 
-    isDraggable({ id }) {
-      const isInPizzaOrder = this.pizzaOrderIngredients.some((item) => item.id === id);
-      const isMaxCountIngredients =
-        this.pizzaOrderIngredients.find((item) => item.id === id)?.count >= MAX_COUNT_INGREDIENTS;
-
-      return !(isInPizzaOrder && isMaxCountIngredients);
+    isDraggable(ingredient) {
+      return ingredient.count < MAX_COUNT_INGREDIENTS;
     },
 
     changeIngredientsCount({ id, count }) {
@@ -101,14 +97,6 @@ export default {
         id,
         count,
       });
-    },
-
-    itemCount(ingredient) {
-      return (
-        this.pizzaOrderIngredients.filter(
-          (item) => item.id === ingredient.id
-        )[0]?.count ?? 0
-      );
     }
   },
 };

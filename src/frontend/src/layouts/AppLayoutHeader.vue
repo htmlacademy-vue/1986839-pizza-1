@@ -23,6 +23,7 @@
     <div class="header__user">
       <router-link
         v-if="!isAuthenticated"
+        key="header-user"
         :to="{ name: 'login' }"
         class="header__login"
         data-test="header-login"
@@ -31,6 +32,7 @@
       </router-link>
       <router-link
         v-else
+        key="header-user"
         :to="{ name: 'profile' }"
         data-test="profile-link"
       >
