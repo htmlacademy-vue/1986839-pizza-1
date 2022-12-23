@@ -1,13 +1,12 @@
 <template>
   <div class="sign-form">
-    <a
-      :to="{ name: 'index' }"
+    <button
       class="close close--white"
       data-test="close"
       @click="closeDialog"
     >
       <span class="visually-hidden">Закрыть форму авторизации</span>
-    </a>
+    </button>
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
@@ -105,3 +104,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .close {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+  }
+</style>

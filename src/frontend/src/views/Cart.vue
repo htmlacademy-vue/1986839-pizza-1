@@ -107,10 +107,10 @@
             </ul>
           </div>
 
-          <CartOrder
+          <cart-order
             data-test="cart-order"
             @setAddress="setAddress"
-          ></CartOrder>
+          ></cart-order>
         </div>
       </main>
 

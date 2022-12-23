@@ -1,5 +1,5 @@
 <template>
-  <AppDrop
+  <app-drop
     data-test="pizza-wrapper"
     @drop="changeIngredientsCount"
   >
@@ -57,7 +57,7 @@
 
       <BuilderPriceCounter />
     </div>
-  </AppDrop>
+  </app-drop>
 </template>
 
 <script>

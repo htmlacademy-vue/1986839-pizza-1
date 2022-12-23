@@ -6,16 +6,11 @@ describe("RadioButton", () => {
     value: 0,
     checked: false,
   };
-  const listeners = { click: null };
 
   let wrapper;
   const createComponent = options => {
     wrapper = shallowMount(RadioButton, options);
   };
-
-  beforeEach(() => {
-    listeners.click = jest.fn();
-  });
 
   afterEach(() => {
     wrapper.destroy();
